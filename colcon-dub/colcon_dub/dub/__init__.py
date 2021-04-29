@@ -1,9 +1,20 @@
 # Copyright 2021 nonanonno
 # Licensed under the Apache License, Version 2.0
+"""Represent DUB package and handle dub executable."""
+
+import os
+import shutil
+import json
 
 from pathlib import Path
 from typing import Dict, Optional
-import json
+
+from colcon_core.environment_variable import EnvironmentVariable
+
+DUB_COMMAND_ENVIRONMENT_VARIABLE = EnvironmentVariable(
+    'DUB_COMMAND', 'The full path to the DUB executable')
+
+IS_WINDOWS = os.name == 'nt'
 
 
 class DubPackage:
@@ -52,6 +63,7 @@ class DubPackage:
 
     @classmethod
     def load(cls, path: Path) -> Optional['DubPackage']:
+        """Read DUB package file and construct instance."""
         dub_package = DubPackage(path)
         if dub_package.name is None:
             return None
@@ -62,3 +74,32 @@ class DubPackage:
 def _load_json(path: Path) -> Dict:
     with open(path, 'r') as f:
         return json.load(f)
+
+
+def _which_executable(environment_variable: str, executable: str) -> str:
+    """
+    Determin the path of an executable.
+
+    An environment variable can be used to override the location instead of
+    relying on searching the PATH.
+
+    :param str environment_variable: The name of the environment variable
+    :param str executable_name: The name of the executable
+    :rtype: str
+    """
+    cmd = None
+    env_cmd = os.getenv(environment_variable)
+
+    # Case of DUB_COMMAND (colcon)
+    if env_cmd is not None and Path(env_cmd).is_file():
+        cmd = env_cmd
+
+    # Fallback (from Path)
+    if cmd is None:
+        cmd = shutil.which(executable)
+
+    return cmd
+
+
+DUB_EXECUTABLE = _which_executable(
+    DUB_COMMAND_ENVIRONMENT_VARIABLE.name, 'dub')
