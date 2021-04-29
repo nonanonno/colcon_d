@@ -29,6 +29,7 @@ jobs:
           python -m pip install setuptools \
             git+https://github.com/colcon/colcon-core \
             git+https://github.com/colcon/colcon-library-path \
+            git+https://github.com/colcon/colcon-ros \
             pytest flake8 pydocstyle
       - name: Build colcon
         run: |
@@ -40,8 +41,9 @@ jobs:
         run: |
           source install/setup.sh
           # We need to specify the location because it is inside a package.
-          colcon build --paths colcon-dub/test/dub-test-package
-      - name: Run test package
+          colcon build --paths colcon-dub/test/* colcon-ros-dub/test/*
+
+      - name: Run dub test package
         run: |
           output=$(./install/dub-test-package/lib/dub/dub-test-package/dub-test-package @>&1)
           [[ "$output" == "Hello, World!" ]] || {
