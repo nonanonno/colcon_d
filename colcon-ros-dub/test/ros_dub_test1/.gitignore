@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/ros_dub_test1
+ros_dub_test1.so
+ros_dub_test1.dylib
+ros_dub_test1.dll
+libros_dub_test1.a
+ros_dub_test1.lib
+ros_dub_test1-test-*
+*.exe
+*.o
+*.obj
+*.lst

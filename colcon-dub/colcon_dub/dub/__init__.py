@@ -7,12 +7,15 @@ import shutil
 import json
 
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from colcon_core.environment_variable import EnvironmentVariable
 
 DUB_COMMAND_ENVIRONMENT_VARIABLE = EnvironmentVariable(
     'DUB_COMMAND', 'The full path to the DUB executable')
+
+DUB_PACKAGE_INSTALL_DIR = 'lib/dub'
+DUB_PACKAGE_PATH_ENV = 'DUB_PACKAGE_PATH'
 
 IS_WINDOWS = os.name == 'nt'
 
@@ -60,6 +63,20 @@ class DubPackage:
                 self.executables.append(e)
         else:
             self.executables.append({'name': None, 'target': self.name})
+
+    async def create_local_packages(self, depends: List['DubPackage']):
+        packages = [
+            {
+                'name': dep.name,
+                'path': str(dep.path),
+                'version': dep.version
+            } for dep in depends
+        ]
+        local_path = self.path / '.dub' / 'packages' / 'local-packages.json'
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+
+        with open(local_path, 'w') as f:
+            json.dump(packages, f, indent=4)
 
     @classmethod
     def load(cls, path: Path) -> Optional['DubPackage']:

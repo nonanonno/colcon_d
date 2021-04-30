@@ -1,0 +1,14 @@
+{
+	"authors": [
+		"nonanonno"
+	],
+	"copyright": "Copyright © 2021, nonanonno",
+	"name": "ros_dub_test1",
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "library",
+			"targetType": "library"
+		}
+	]
+}

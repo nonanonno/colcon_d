@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-    <name>ros-dub-test2</name>
-    <version>0.0.0</version>
-    <description>TODO: Package description</description>
+    <name>ros_dub_test1</name>
+    <version>0.0.1</version>
+    <description>Dummy library to check if dependency is solved</description>
     <maintainer email="as.nonanonno@gmail.com">developer</maintainer>
     <license>Apache-2.0</license>
 
