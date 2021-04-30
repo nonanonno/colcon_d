@@ -10,5 +10,15 @@
 			"name": "library",
 			"targetType": "library"
 		}
-	]
+	],
+	"installFiles": {
+		"share/$DUB_PACKAGE": [
+			"package.xml"
+		]
+	},
+	"createFiles": {
+		"share/ament_index/resource_index/packages": [
+			"$DUB_PACKAGE"
+		]
+	}
 }
