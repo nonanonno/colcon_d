@@ -25,11 +25,13 @@ jobs:
           compiler: ${{ matrix.dc }}
       - name: Install dependencies
         run: |
+          # colcon-output is required to collect summary
           python -m pip install --upgrade pip
           python -m pip install setuptools \
             git+https://github.com/colcon/colcon-core \
             git+https://github.com/colcon/colcon-library-path \
             git+https://github.com/colcon/colcon-ros \
+            git+https://github.com/colcon/colcon-output.git \
             pytest pytest-shell flake8 pydocstyle
       - name: Build colcon
         run: |
