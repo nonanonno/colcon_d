@@ -10,6 +10,6 @@ Since DUB doesn't have function to get location of dependent package as environm
 ### Status
 
 - [x] Support package identify
-- [ ] Support build task
+- [x] Support build task
 - [ ] Support test task
-- [ ] Support handling package dependencies
+- [x] Support handling package dependencies

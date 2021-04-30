@@ -6,4 +6,4 @@ colcon_d
 Extensions for [colcon-core](https://github.com/colcon/colcon-core) to support [DUB](https://dub.pm/index.html) and combination of DUB and ROS2.
 
 - [colcon-dub](colcon-dub) : An extension to support DUB
-- colcon-ros-dub : An extension to support combination of DUB and ROS2 (TBI)
+- [colcon-ros-dub](colcon-ros-dub) : An extension to support combination of DUB and ROS2
