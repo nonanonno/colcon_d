@@ -16,7 +16,6 @@ from colcon_core.environment import logger
 from colcon_core.plugin_system import satisfies_version
 
 from colcon_dub.dub import DubPackage
-from colcon_dub.dub import DUB_PACKAGE_INSTALL_DIR
 from colcon_dub.dub import DUB_PACKAGE_PATH_ENV
 
 
@@ -32,7 +31,7 @@ class DubPackagePathEnvironment(EnvironmentExtensionPoint):
     def create_environment_hooks(
         self, prefix_path: Path, pkg_name: str):  # noqa D102
         hooks = []
-        dub_path = prefix_path / DUB_PACKAGE_INSTALL_DIR / pkg_name
+        dub_path = prefix_path / 'lib' / 'dub' / pkg_name
         dub_package = DubPackage.load(dub_path)
         logger.log(1, "checking '%s'" % dub_path)
 

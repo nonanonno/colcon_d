@@ -6,17 +6,17 @@ import os
 from argparse import ArgumentParser
 from pathlib import Path
 from distutils.dir_util import copy_tree
-from shutil import copy2, rmtree
+from shutil import copy2
 from typing import Dict, Optional
 
 from colcon_dub.dub import DUB_EXECUTABLE
 from colcon_dub.dub import DubPackage
-from colcon_dub.dub import DUB_PACKAGE_INSTALL_DIR
 from colcon_dub.dub import DUB_PACKAGE_PATH_ENV
 
 from colcon_core.logging import colcon_logger
 from colcon_core.task import TaskExtensionPoint
 from colcon_core.task import run
+from colcon_core.task import create_file
 from colcon_core.plugin_system import satisfies_version
 from colcon_core.shell import get_command_environment
 from colcon_core.environment import create_environment_scripts
@@ -95,10 +95,10 @@ class DubBuildTask(TaskExtensionPoint):
         self.progress('build')
         args = self.context.args  # BuildPackageArguments
 
-        for target in dub.executables:
+        for config in dub.configurations:
             cmd = [DUB_EXECUTABLE, 'build']
-            if target['name'] is not None:
-                cmd += ['-c', target['name']]
+            if config.name is not None:
+                cmd += ['-c', config.name]
             cmd += ['--']
             cmd += (self.context.args.dub_args or [])
 
@@ -112,23 +112,55 @@ class DubBuildTask(TaskExtensionPoint):
 
         # We now install to <install_base>/lib/dub/<package>
         src_dir = Path(dub.path)
-        dst_dir = Path(args.install_base) / DUB_PACKAGE_INSTALL_DIR / dub.name
 
-        # Install only visible files and directories
-        files = [f for f in os.listdir(src_dir) if not f.startswith('.')]
+        # Ignore git files
+        files = [
+            f for f in os.listdir(src_dir)
+            if not f.startswith('.git')
+            and f != '.' and f != '..'
+        ]
 
-        # Remove files before install
-        if dst_dir.exists():
-            rmtree(dst_dir)
-
-        try:
-            os.makedirs(dst_dir, exist_ok=True)
-        except RuntimeError as e:
-            logger.error(str(e))
-            return 1
-
+        # install DUB
         for f in files:
-            if (src_dir / f).is_file():
-                copy2(src_dir / f, dst_dir)
-            else:
-                copy_tree(str(src_dir / f), str(dst_dir / f))
+            dst_f = Path(f).parts[-1]
+            _copy_path(
+                args, f,
+                'lib/dub/{self.context.pkg.name}/{dst_f}'.format_map(locals()))
+
+        # install builds
+        for c in dub.configurations:
+            if not c.is_executable():
+                continue
+            obj_path = c.object_path()
+            _copy_path(
+                args, obj_path,
+                'lib/{self.context.pkg.name}/{obj_path}'.format_map(locals()))
+
+        # install files
+        for dst, files in dub.install_files.items():
+            for f in files:
+                dst_f = Path(f).parts[-1]
+                _copy_path(
+                    args, f,
+                    '{dst}/{dst_f}'.format_map(locals()))
+
+        # create files
+        for dst, files in dub.create_files.items():
+            for f in files:
+                create_file(args, '{dst}/{f}'.format_map(locals()))
+
+
+def _copy_path(args, src_path, dst_path):
+    dst_path = Path(args.install_base) / dst_path
+    src_path = Path(args.path) / src_path
+    logger.info("'{src_path}' -> '{dst_path}'".format_map(locals()))
+    try:
+        os.makedirs(dst_path.parent, exist_ok=True)
+    except RuntimeError as e:
+        logger.error(str(e))
+        return
+
+    if src_path.is_file():
+        copy2(src_path, dst_path)
+    else:
+        copy_tree(str(src_path), str(dst_path))
