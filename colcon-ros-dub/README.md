@@ -5,6 +5,6 @@ An extension for [colcon-core](https://github.com/colcon/colcon-core) to support
 ## Status
 
 - [x] Support package identify
-- [ ] Support build task
+- [x] Support build task
 - [ ] Support test task
-- [ ] Support handling package dependencies
+- [x] Support handling package dependencies
