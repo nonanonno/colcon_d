@@ -30,24 +30,15 @@ jobs:
             git+https://github.com/colcon/colcon-core \
             git+https://github.com/colcon/colcon-library-path \
             git+https://github.com/colcon/colcon-ros \
-            pytest flake8 pydocstyle
+            pytest pytest-shell flake8 pydocstyle
       - name: Build colcon
         run: |
           colcon build --paths ./*
-      - name: Test with pytest
-        run: |
-          pytest
       - name: Build test package
         run: |
           source install/setup.sh
           # We need to specify the location because it is inside a package.
           colcon build --paths colcon-dub/test/* colcon-ros-dub/test/*
-
-      - name: Run dub test package
+      - name: Test with pytest
         run: |
-          output=$(./install/dub-test-package/lib/dub/dub-test-package/dub-test-package @>&1)
-          [[ "$output" == "Hello, World!" ]] || {
-            echo "didn't get expected output."
-            echo "Output:  $output"
-            exit 1
-          }
+          pytest
