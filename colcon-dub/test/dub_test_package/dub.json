@@ -18,5 +18,23 @@
 	],
 	"dependencies": {
 		"silly": "~>1.1.1"
+	},
+	"installFiles": {
+		"share/$DUB_PACKAGE/test_install": [
+			"aaa.txt",
+			"bbb"
+		],
+		"share/$DUB_PACKAGE/test_install/$DUB_PACKAGE": [
+			"directory/ccc.txt"
+		]
+	},
+	"createFiles": {
+		"share/$DUB_PACKAGE/test_create": [
+			"aaa",
+			"bbb"
+		],
+		"share/$DUB_PACKAGE/test_create/second": [
+			"ccc"
+		]
 	}
 }
