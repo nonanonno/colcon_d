@@ -11,7 +11,7 @@ from colcon_dub.package_identification.dub import DubPackage
 from colcon_ros.package_identification.ros import RosPackageIdentification
 
 
-class RosDubPackageIdentification(PackageIdentificationExtensionPoint):
+class AmentDubPackageIdentification(PackageIdentificationExtensionPoint):
     """Identify ROS DUB package with 'package.xml' and DUB package."""
 
     # The priority needs to be higher than the ROS extensions identifying
@@ -26,7 +26,7 @@ class RosDubPackageIdentification(PackageIdentificationExtensionPoint):
 
     def identify(self, desc: PackageDescriptor):
         """Check if the given path is ROS2 DUB package."""
-        if desc.type is not None and desc.type != 'ros.dub':
+        if desc.type is not None and desc.type != 'ros.ament_dub':
             # This package was already identified as another package type
             return
 
@@ -35,7 +35,7 @@ class RosDubPackageIdentification(PackageIdentificationExtensionPoint):
         ros_extension = RosPackageIdentification()
         ros_extension.identify(ros_desc)
 
-        if ros_desc.type != 'ros.dub':
+        if ros_desc.type != 'ros.ament_dub':
             return
 
         dub_package = DubPackage.load(ros_desc.path)

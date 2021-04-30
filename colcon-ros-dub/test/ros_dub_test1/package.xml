@@ -7,9 +7,9 @@
     <maintainer email="as.nonanonno@gmail.com">developer</maintainer>
     <license>Apache-2.0</license>
 
-    <buildtool_depend>dub</buildtool_depend>
+    <buildtool_depend>ament_dub</buildtool_depend>
 
     <export>
-        <build_type>dub</build_type>
+        <build_type>ament_dub</build_type>
     </export>
 </package>

@@ -10,7 +10,7 @@ from colcon_core.task import TaskExtensionPoint
 logger = colcon_logger.getChild(__name__)
 
 
-class RosDubBuildTask(TaskExtensionPoint):
+class AmentDubBuildTask(TaskExtensionPoint):
     """Build ROS DUB packages."""
 
     def __init__(self):
@@ -21,7 +21,7 @@ class RosDubBuildTask(TaskExtensionPoint):
         self, *, additional_hooks=None, skip_hook_creation=False):  # noqa D102
         args = self.context.args  # BuildPackageArguments
         logger.info("Building ROS package in '{args.path}'"
-                    "with build type 'ros.dub'".format_map(locals()))
+                    "with build type 'ros.ament_dub'".format_map(locals()))
 
         dub_build_task = DubBuildTask()
         dub_build_task.set_context(context=self.context)
