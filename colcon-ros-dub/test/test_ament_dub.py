@@ -5,6 +5,8 @@ import os
 import pytest_shell.shell
 from pathlib import Path
 from typing import Optional
+import shutil
+import warnings
 
 
 def _search_workspace(upper_than=2) -> Optional[str]:
@@ -27,9 +29,24 @@ def _search_workspace(upper_than=2) -> Optional[str]:
 WORKSPACE_ROOT = _search_workspace()
 
 
-def test_ros_dub_package_execute(bash: pytest_shell.shell.bash):
-    """Check if the ros dub package was built by executing ros_dub_test2."""
+def test_ament_dub_package_execute(bash: pytest_shell.shell.bash):
+    """Check if the ament_dub package was built by executing ros_dub_test2."""
+    if not shutil.which('ros2'):
+        warnings.warn("'ros2' does not exist, skip testing")
+        return
     bash.cd(WORKSPACE_ROOT)
     assert bash.run_script_inline([
         './install/ros_dub_test2/lib/dub/ros_dub_test2/ros_dub_test2'
     ]) == 'ros_dub_test1'
+
+
+def test_execute_via_ros_command(bash: pytest_shell.shell.bash):
+    """Check if the executable can be call via ros2 run"""
+    if not shutil.which('ros2'):
+        warnings.warn("'ros2' does not exist, skip testing")
+        return
+    bash.cd(WORKSPACE_ROOT)
+    assert bash.run_script_inline([
+        'source ./install/setup.sh',
+        'ros2 run ros_dub_test2 ros_dub_test2'
+    ]).strip() == 'ros_dub_test1'

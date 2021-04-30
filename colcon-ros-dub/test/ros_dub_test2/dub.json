@@ -7,5 +7,15 @@
 	"version": "0.0.1",
 	"dependencies": {
 		"ros_dub_test1": "~>0.0.1"
+	},
+	"installFiles": {
+		"share/$DUB_PACKAGE": [
+			"package.xml"
+		]
+	},
+	"createFiles": {
+		"share/ament_index/resource_index/packages": [
+			"$DUB_PACKAGE"
+		]
 	}
 }
