@@ -6,7 +6,7 @@ docs/
 dub_test_package.so
 dub_test_package.dylib
 dub_test_package.dll
-dub_test_package.a
+libdub_test_package.a
 dub_test_package.lib
 dub_test_package-test-*
 *.exe

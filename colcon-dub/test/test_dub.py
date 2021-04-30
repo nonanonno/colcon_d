@@ -25,6 +25,7 @@ def _search_workspace(upper_than=2) -> Optional[str]:
 
 
 WORKSPACE_ROOT = _search_workspace()
+PATH_TO_THIS = str(Path(__file__).absolute().parent)
 
 
 def test_dub_package_execute(bash: pytest_shell.shell.bash):
@@ -33,3 +34,23 @@ def test_dub_package_execute(bash: pytest_shell.shell.bash):
     assert bash.run_script_inline([
         './install/dub_test_package/lib/dub/dub_test_package/dub_test_package'
     ]) == 'Hello, World!'
+
+
+def test_colcon_test_success(bash: pytest_shell.shell.bash):
+    """Check if the dub package can be tested via colcon test."""
+    bash.cd(WORKSPACE_ROOT)
+    assert bash.run_script_inline([
+        'source install/setup.sh',
+        f'colcon test --paths {PATH_TO_THIS}/* --dub-args -i success'
+    ]).count('Summary: 1 package finished') > 0
+
+
+def test_colcon_test_fail(bash: pytest_shell.shell.bash):
+    """Check if the dub package can be tested via colcon test."""
+    bash.cd(WORKSPACE_ROOT)
+    bash.auto_return_code_error = False
+    bash.run_script_inline([
+        'source install/setup.sh',
+        f'colcon test --paths {PATH_TO_THIS}/* --dub-args -i fail'
+    ])
+    assert bash.last_return_code != 0

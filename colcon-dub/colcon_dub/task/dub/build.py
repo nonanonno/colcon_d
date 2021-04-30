@@ -99,6 +99,7 @@ class DubBuildTask(TaskExtensionPoint):
             cmd = [DUB_EXECUTABLE, 'build']
             if target['name'] is not None:
                 cmd += ['-c', target['name']]
+            cmd += ['--']
             cmd += (self.context.args.dub_args or [])
 
             completed = await run(self.context, cmd, cwd=args.path, env=env)

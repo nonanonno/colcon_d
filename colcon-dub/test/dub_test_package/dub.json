@@ -5,5 +5,18 @@
 	"copyright": "Copyright © 2021, nonanonno",
 	"description": "test package",
 	"license": "Apache-2.0",
-	"name": "dub_test_package"
+	"name": "dub_test_package",
+	"configurations": [
+		{
+			"name": "dub_test_package",
+			"targetType": "executable"
+		},
+		{
+			"name": "unittest",
+			"targetType": "library"
+		}
+	],
+	"dependencies": {
+		"silly": "~>1.1.1"
+	}
 }

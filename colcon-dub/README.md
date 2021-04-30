@@ -11,5 +11,5 @@ Since DUB doesn't have function to get location of dependent package as environm
 
 - [x] Support package identify
 - [x] Support build task
-- [ ] Support test task
+- [x] Support test task
 - [x] Support handling package dependencies
