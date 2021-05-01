@@ -5,7 +5,18 @@
 	"copyright": "Copyright © 2021, nonanonno",
 	"name": "ros_dub_test2",
 	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "ros_dub_test2",
+			"targetType": "executable"
+		},
+		{
+			"name": "unittest",
+			"targetType": "library"
+		}
+	],
 	"dependencies": {
+		"silly": "~>1.1.1",
 		"ros_dub_test1": "~>0.0.1"
 	},
 	"installFiles": {
