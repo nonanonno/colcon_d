@@ -9,8 +9,15 @@
 		{
 			"name": "library",
 			"targetType": "library"
+		},
+		{
+			"name": "unittest",
+			"targetType": "library"
 		}
 	],
+	"dependencies": {
+		"silly": "~>1.1.1"
+	},
 	"installFiles": {
 		"share/$DUB_PACKAGE": [
 			"package.xml"

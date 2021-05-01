@@ -1,7 +1,26 @@
 import std.stdio;
 import ros_dub_test1;
 
-void main()
+version (unittest)
 {
-	writeln(hello());
+
+}
+else
+{
+  void main()
+  {
+    writeln(hello());
+  }
+}
+
+@("success")
+unittest
+{
+  assert(hello() == "ros_dub_test1");
+}
+
+@("fail")
+unittest
+{
+  assert(hello() == "ros_dub_test2");
 }
