@@ -1,6 +1,6 @@
 # Copyright 2021 nonanonno
 # Licensed under the Apache License, Version 2.0
-"""Implement build task for ROS DUB package."""
+"""Implement build task for ament_dub package."""
 
 from pathlib import Path
 
@@ -14,7 +14,7 @@ logger = colcon_logger.getChild(__name__)
 
 
 class AmentDubBuildTask(TaskExtensionPoint):
-    """Build ROS DUB packages."""
+    """Build ament_dub packages."""
 
     def __init__(self):
         super().__init__()
