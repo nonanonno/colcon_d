@@ -28,7 +28,6 @@ def _search_workspace(upper_than=2) -> Optional[str]:
 
 WORKSPACE_ROOT = _search_workspace()
 PATH_TO_THIS = str(Path(__file__).absolute().parent)
-INSTALL = 'install/{pkg}'
 
 
 def test_ament_dub_package_execute(bash: pytest_shell.shell.bash):
@@ -56,7 +55,8 @@ def test_colcon_test_success(bash: pytest_shell.shell.bash):
     bash.cd(WORKSPACE_ROOT)
     assert bash.run_script_inline([
         'source install/setup.sh',
-        f'colcon test --paths {PATH_TO_THIS}/* --dub-args -i success'
+        f'colcon test --paths {PATH_TO_THIS}/*'
+        ' --dub-args -i success'
     ]).count('Summary: 2 packages finished') > 0
 
 
@@ -66,6 +66,8 @@ def test_colcon_test_fail(bash: pytest_shell.shell.bash):
     bash.auto_return_code_error = False
     bash.run_script_inline([
         'source install/setup.sh',
-        f'colcon test --paths {PATH_TO_THIS}/* --dub-args -i fail'
+        f'colcon test --paths {PATH_TO_THIS}/*'
+        ' --dub-args -i fail'
+        ' --return-code-on-test-failure'
     ])
     assert bash.last_return_code != 0
