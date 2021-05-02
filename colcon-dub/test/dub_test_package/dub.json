@@ -6,6 +6,7 @@
 	"description": "test package",
 	"license": "Apache-2.0",
 	"name": "dub_test_package",
+	"version": "0.0.1",
 	"configurations": [
 		{
 			"name": "dub_test_package",
